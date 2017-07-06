@@ -1,0 +1,65 @@
+{
+	"name": "kio-ng2-ctn",
+	"version": "1.0.0",
+	"description": "ng2 module for querying ctn",
+	"main": "./release",
+	"module": "./release/module.js",
+	"typings": "./release/module.d.ts",
+	"scripts": {
+		"ng": "ngc",
+		"start": "ngc -p tsconfig-ngc.json serve",
+		"ngModule:build": "./scripts/ngModule.sh build",
+		"ngModule:copy": "./scripts/ngModule.sh copy $DEV_LATEST",
+		"build": "npm run ngModule:build",
+		"test": "ngc -p tsconfig-ngc.json test",
+		"lint": "tslint ./src/**/*.ts ./test/**/*.ts",
+		"e2e": "ngc -p tsconfig-ngc.json e2e",
+		"predoc": "rm -rf ./documentation",
+		"doc": "compodoc -p ./tsconfig-doc.json -d ./documentation/",
+		"deploy:release": "./scripts/copy_release.sh",
+		"transpile": "ngc -p tsconfig-ngc.json",
+		"watch:test": "ts-mocha -w ./test/**/*.spec.ts",
+		"version": "npm run release",
+		"postversion": "git push && git push --tags",
+		"build:release": "NODE_ENV=production npm run build",
+		"build:release:watch": "./scripts/watch.sh build:release"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/afkm/kio-ng2-ctn.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/afkm/kio-ng2-ctn/issues"
+	},
+	"homepage": "https://github.com/afkm/kio-ng2-ctn#readme",
+	"devDependencies": {
+		"@angular/compiler-cli": "^4.2.5",
+		"@compodoc/compodoc": "^1.0.0-beta.10",
+		"@types/chai": "^4.0.1",
+		"@types/mocha": "^2.2.41",
+		"@types/node": "^8.0.7",
+		"compodoc": "0.0.41",
+		"mocha": "^3.4.2",
+		"nodemon": "^1.11.0",
+		"ts-mocha": "^1.0.3",
+		"ts-node": "^3.2.0",
+		"tslint": "^5.5.0",
+		"typescript": "2.3.4"
+	},
+	"dependencies": {
+		"@angular/common": "^4.2.5",
+		"@angular/compiler": "^4.2.5",
+		"@angular/core": "^4.2.5",
+		"@angular/http": "^4.2.5",
+		"@angular/platform-browser": "^4.2.5",
+		"@angular/platform-browser-dynamic": "^4.2.5",
+		"@types/showdown": "^1.4.32",
+		"kio-ng2": "github:afkmatze/kio-ng2",
+		"kio-ng2-component-routing": "github:afkmatze/kio-ng2-component-routing",
+		"rxjs": "^5.4.2",
+		"zone.js": "^0.8.12"
+	}
+}
