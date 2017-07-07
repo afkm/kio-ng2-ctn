@@ -12,7 +12,7 @@ import {
   nodeType, nodeTypeByName,
   KioContentModel, KioNodeModel, KioQueryModel/*,
   debugging*/
-} from 'kio-ng2'
+} from 'kio-ng2-data'
 import { ContentMockingService } from 'kio-ng2-component-routing'
 import { CtnConfig } from '../interfaces/ctn-config'
 import { CTN_CONFIG } from '../config-provider'
