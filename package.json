@@ -19,7 +19,6 @@
 		"deploy:release": "./scripts/copy_release.sh",
 		"transpile": "ngc -p tsconfig-ngc.json",
 		"watch:test": "ts-mocha -w ./test/**/*.spec.ts",
-		"version": "npm run release",
 		"build:release": "NODE_ENV=production npm run build",
 		"build:release:watch": "./scripts/watch.sh build:release",
 		"release": "./scripts/release.sh"
