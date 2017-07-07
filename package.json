@@ -57,7 +57,7 @@
 		"@angular/platform-browser": "^4.2.5",
 		"@angular/platform-browser-dynamic": "^4.2.5",
 		"@types/showdown": "^1.4.32",
-		"kio-ng2": "github:afkmatze/kio-ng2",
+		"kio-ng2": "github:afkmatze/kio-ng2#digit-bma",
 		"kio-ng2-component-routing": "github:afkmatze/kio-ng2-component-routing",
 		"rxjs": "^5.4.2",
 		"zone.js": "^0.8.12"
