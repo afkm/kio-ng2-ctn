@@ -75,7 +75,7 @@ function copy_release () {
 
 case ${1} in
   "build" )
-    build && clean_build && deploy
+    build && deploy
     ;;
 
   "clean" )

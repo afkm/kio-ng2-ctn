@@ -519,6 +519,33 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "src/module.ts",
+			"settings":
+			{
+				"buffer_size": 1034,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/interfaces/ctn-config.ts",
+			"settings":
+			{
+				"buffer_size": 115,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/services/backend.service.ts",
+			"settings":
+			{
+				"buffer_size": 6396,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -574,10 +601,15 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/tEErohr/Documents/kio/angular2/digit/digit-dev/modules/kio-ng2-ctn"
+		"/Users/tEErohr/Documents/kio/angular2/digit/digit-dev/modules/kio-ng2-ctn",
+		"/Users/tEErohr/Documents/kio/angular2/digit/digit-dev/modules/kio-ng2-ctn/src",
+		"/Users/tEErohr/Documents/kio/angular2/digit/digit-dev/modules/kio-ng2-ctn/src/interfaces",
+		"/Users/tEErohr/Documents/kio/angular2/digit/digit-dev/modules/kio-ng2-ctn/src/services"
 	],
 	"file_history":
 	[
+		"/Users/tEErohr/Documents/kio/angular2/digit/digit-dev/modules/kio-ng2-ctn/src/config-provider.ts",
+		"/Users/tEErohr/Documents/kio/angular2/digit/digit-dev/modules/kio-ng2-ctn/src/interfaces/locale-provider.ts",
 		"/Users/tEErohr/Documents/kio/angular2/digit/digit-bgr/src/index_dev.html",
 		"/Users/tEErohr/Documents/kio/angular2/digit/digit-bgr/src/index.html",
 		"/Users/tEErohr/Documents/kio/angular2/digit/digit-bgr/src/browser-guard.ts",
@@ -703,9 +735,7 @@
 		"/Users/tEErohr/Documents/kio/angular2/digit/digit-bgr/src/app/kio/publication/txt/formatted-text/formatted-text.component.scss",
 		"/Users/tEErohr/Documents/kio/angular2/digit/digit-bgr/src/app/kio/publication/txt/formatted-text/footnotes/parse.ts",
 		"/Users/tEErohr/Documents/kio/angular2/digit/digit-bgr/src/app/kio/publication/txt/formatted-text/formatted-text.component.ts",
-		"/Users/tEErohr/Documents/kio/angular2/digit/digit-bgr/src/app/kio/components/kio-abstract-src/kio-abstract-src.component.ts",
-		"/Users/tEErohr/Documents/kio/angular2/digit/digit-bgr/src/app/kio/publication/txt/formatted-text/footnotes/index.ts",
-		"/Users/tEErohr/Documents/kio/angular2/digit/digit-bgr/src/app/kio/publication/txt/formatted-text/markdown/index.ts"
+		"/Users/tEErohr/Documents/kio/angular2/digit/digit-bgr/src/app/kio/components/kio-abstract-src/kio-abstract-src.component.ts"
 	],
 	"find":
 	{
@@ -921,8 +951,112 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "src/module.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1034,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								636,
+								636
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"typescript_plugin_format_options":
+							{
+								"convertTabsToSpaces": true,
+								"indentSize": 2,
+								"tabSize": 2
+							},
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 1,
+					"file": "src/interfaces/ctn-config.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 115,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								115,
+								115
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/services/backend.service.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6396,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1611,
+								1611
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"use_tab_stops": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 518.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -943,11 +1077,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
