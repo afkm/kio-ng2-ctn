@@ -10,3 +10,7 @@ git merge development
 npm version ${1:-patch}
 
 git push && git push --tags
+
+git checkout development
+
+git merge master
