@@ -20,9 +20,9 @@
 		"transpile": "ngc -p tsconfig-ngc.json",
 		"watch:test": "ts-mocha -w ./test/**/*.spec.ts",
 		"version": "npm run release",
-		"postversion": "git push && git push --tags",
 		"build:release": "NODE_ENV=production npm run build",
-		"build:release:watch": "./scripts/watch.sh build:release"
+		"build:release:watch": "./scripts/watch.sh build:release",
+		"release": "./script/release.sh"
 	},
 	"repository": {
 		"type": "git",
