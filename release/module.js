@@ -4,13 +4,6 @@ import { NgModule } from '@angular/core';
 import { CTN_CONFIG } from './config-provider';
 import { BackendService } from './services/backend.service';
 export { BackendService, CTN_CONFIG };
-export function provideDefaultConfig() {
-    return {
-        localeProvider: {
-            current: 'en_US'
-        }
-    };
-}
 var KioCtnModule = (function () {
     function KioCtnModule() {
     }
@@ -21,7 +14,8 @@ var KioCtnModule = (function () {
                 {
                     provide: CTN_CONFIG,
                     useValue: config
-                }
+                },
+                BackendService
             ]
         };
     };
@@ -32,10 +26,17 @@ KioCtnModule.decorators = [
     { type: NgModule, args: [{
                 imports: [CommonModule, HttpModule],
                 //declarations: [],
-                providers: [{
+                providers: [
+                    {
                         provide: CTN_CONFIG,
-                        useFactory: provideDefaultConfig
-                    }, BackendService],
+                        useValue: {
+                            localeProvider: {
+                                current: 'en_US'
+                            }
+                        }
+                    },
+                    BackendService
+                ],
                 //entryComponents: [],
                 exports: [CommonModule, HttpModule]
             },] },

@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable, ReplaySubject } from 'rxjs';
 import 'rxjs/add/operator/catch';
@@ -157,6 +157,6 @@ BackendService.decorators = [
 BackendService.ctorParameters = function () { return [
     { type: Http, },
     { type: ContentMockingService, },
-    { type: undefined, decorators: [{ type: Inject, args: [CTN_CONFIG,] },] },
+    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [CTN_CONFIG,] },] },
 ]; };
 //# sourceMappingURL=backend.service.js.map
