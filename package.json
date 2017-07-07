@@ -1,6 +1,6 @@
 {
 	"name": "kio-ng2-ctn",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "ng2 module for querying ctn",
 	"main": "./release",
 	"module": "./release/module.js",
@@ -22,7 +22,7 @@
 		"version": "npm run release",
 		"build:release": "NODE_ENV=production npm run build",
 		"build:release:watch": "./scripts/watch.sh build:release",
-		"release": "./script/release.sh"
+		"release": "./scripts/release.sh"
 	},
 	"repository": {
 		"type": "git",
