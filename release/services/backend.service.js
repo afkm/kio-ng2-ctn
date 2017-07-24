@@ -5,7 +5,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeout';
 import { KioQueryModel /*,
-debugging*/ } from 'kio-ng2';
+debugging*/ } from 'kio-ng2-data';
 import { ContentMockingService } from 'kio-ng2-component-routing';
 import { CTN_CONFIG } from '../config-provider';
 var API_URL = 'https://pb8i8ysw33.execute-api.eu-central-1.amazonaws.com/v2/api';

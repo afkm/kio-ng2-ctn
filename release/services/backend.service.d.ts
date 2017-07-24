@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeout';
-import { KioQuery, KioQueryResult, KioContentModel } from 'kio-ng2';
+import { KioQuery, KioQueryResult, KioContentModel } from 'kio-ng2-data';
 import { ContentMockingService } from 'kio-ng2-component-routing';
 import { CtnConfig } from '../interfaces/ctn-config';
 export declare class BackendService {
