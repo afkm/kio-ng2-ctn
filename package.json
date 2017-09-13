@@ -46,7 +46,7 @@
 		"ts-mocha": "^1.0.3",
 		"ts-node": "^3.2.0",
 		"tslint": "^5.5.0",
-		"typescript": "2.3.4"
+		"typescript": "^2.3.4"
 	},
 	"dependencies": {
 		"@angular/common": "^4.2.5",
@@ -56,8 +56,8 @@
 		"@angular/platform-browser": "^4.2.5",
 		"@angular/platform-browser-dynamic": "^4.2.5",
 		"@types/showdown": "^1.4.32",
-		"kio-ng2-data": "github:afkm/kio-ng2-data",
 		"kio-ng2-component-routing": "github:afkmatze/kio-ng2-component-routing",
+		"kio-ng2-data": "github:afkm/kio-ng2-data",
 		"rxjs": "^5.4.2",
 		"zone.js": "^0.8.12"
 	}

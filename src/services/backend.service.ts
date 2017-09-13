@@ -13,9 +13,13 @@ import {
   KioContentModel, KioNodeModel, KioQueryModel/*,
   debugging*/
 } from 'kio-ng2-data'
-import { ContentMockingService } from 'kio-ng2-component-routing'
 import { CtnConfig } from '../interfaces/ctn-config'
 import { CTN_CONFIG } from '../config-provider'
+import { MockingProvider, MockedData } from '../interfaces/mocking-provider'
+import { MOCKING_PROVIDER } from '../mocking-provider'
+import { CtnLogger } from '../classes/Logger.class'
+
+const KIO_TXT_URL = 'https://kioget.37x.io/txt'
 
 const API_URL = 'https://pb8i8ysw33.execute-api.eu-central-1.amazonaws.com/v2/api'
 //const API_URL = 'https://vaskbde08f.execute-api.eu-central-1.amazonaws.com/stage/api'
@@ -44,7 +48,7 @@ export class BackendService {
 
   constructor(
       protected http:Http, 
-      private mockingService:ContentMockingService, 
+      @Optional() @Inject(MOCKING_PROVIDER) private mockingService:MockingProvider, 
       @Optional() @Inject(CTN_CONFIG) private config:CtnConfig
     )
   { 
@@ -52,6 +56,7 @@ export class BackendService {
   }
 
   private cache : Map<string,Observable<KioQueryResult>> = new Map()
+  private errorLogger:CtnLogger = new CtnLogger()
 
   private wrapAsync ( subject : Observable<KioQueryResult> ) : Observable<KioQueryResult> {
     const replayResult = new ReplaySubject(2,null)
@@ -73,7 +78,7 @@ export class BackendService {
   }
   private parseResponseData ( responseData:any , node:KioContentModel ):any {
       if ( node.type === 'txt' )
-      return responseData
+      return {data: responseData}
 
     responseData = responseData || {}
     
@@ -81,6 +86,9 @@ export class BackendService {
     if ( dataKeys.length > 0 )
       return responseData
 
+    if ( !this.mockingService ) {
+      throw Error ( `No mocking service provided. Please do so by using MOCKING_PROVIDER.` )
+    }
     return this.mockingService.mockContentData ( node )
   }
 
@@ -100,6 +108,7 @@ export class BackendService {
           } else {
             errorMsg = error.message ? error.message : error.toString()
           }
+          this.errorLogger.logError ( errorMsg, node )
           console.groupCollapsed('Backend error')
           console.trace('Node: ', node )
           console.log ( 'Failed to load content with query: ' + JSON.stringify(query) )
@@ -116,7 +125,7 @@ private mapResponseData ( query : KioQuery , responseData:any ) : KioQueryResult
     data: responseData
   })
 }
-
+/*
 private _query ( query : KioQuery ) : Observable<KioQueryResult> {
     return this.http.post ( API_URL , query )
         .map ( (response) => this.mapResponseData ( query , response.json() ) )
@@ -134,7 +143,7 @@ private _query ( query : KioQuery ) : Observable<KioQueryResult> {
         } )
 
 
-  }
+  }*/
 
   private addQuery ( cacheKey:string, observable:Observable<KioQueryResult> , ttl:number ) {
     //addQueryToCache ( cacheKey , this.wrapAsync(observable) , ttl )
@@ -172,10 +181,20 @@ private _query ( query : KioQuery ) : Observable<KioQueryResult> {
     if ( /^\[mock/.test(node.cuid) )
       return this.loadMockedData ( node , contentParams )
 
+    if ( node.type === 'txt' ) {
+      return this.http.get(`${KIO_TXT_URL}/${node.cuid}/${this.config.localeProvider.current}`).map ( response => {
+        return this.parseResponse ( response, node )
+      } )
+    }
+
     const query:KioQuery = this.buildNodeQuery(node, contentParams)
     const tStart = Date.now()
     return this._queryNode(node,contentParams).map ( result => {
       return result
+    } )
+    .catch ( (error:any) => {
+      this.errorLogger.logError ( error, node )
+      return Observable.throw(error)
     } )
   }
 
@@ -187,4 +206,9 @@ private _query ( query : KioQuery ) : Observable<KioQueryResult> {
     } )
   }
 
+  /*protected logger=window.afkm.logger.cloneToScope(this,{
+    labelStyle: {
+      fontSize: 'large'
+    }
+  })*/
 }
