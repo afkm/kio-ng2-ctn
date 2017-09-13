@@ -1,6 +1,6 @@
 {
 	"name": "kio-ng2-ctn",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "ng2 module for querying ctn",
 	"main": "./release",
 	"module": "./release/module.js",
@@ -44,7 +44,7 @@
 		"@angular/platform-browser": "^4.2.3",
 		"@angular/platform-browser-dynamic": "^4.2.3",
 		"rxjs": "^5.4.2",
-		"zone.js": "^0.8.12"		
+		"zone.js": "^0.8.12"
 	},
 	"devDependencies": {
 		"kio-ng2-component-routing": "github:afkmatze/kio-ng2-component-routing#v0.0.8",
