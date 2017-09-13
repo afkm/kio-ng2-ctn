@@ -35,7 +35,6 @@
 	},
 	"homepage": "https://github.com/afkm/kio-ng2-ctn#readme",
 	"peerDependencies": {
-		"kio-ng2-component-routing": "github:afkmatze/kio-ng2-component-routing#v0.0.8",
 		"kio-ng2-data": "github:afkm/kio-ng2-data#v0.0.1",
 		"@angular/common": "^4.2.3",
 		"@angular/compiler": "^4.2.3",
@@ -47,7 +46,6 @@
 		"zone.js": "^0.8.12"
 	},
 	"devDependencies": {
-		"kio-ng2-component-routing": "github:afkmatze/kio-ng2-component-routing#v0.0.8",
 		"kio-ng2-data": "github:afkm/kio-ng2-data#v0.0.1",
 		"@angular/compiler-cli": "^4.2.5",
 		"@compodoc/compodoc": "^1.0.0-beta.10",
