@@ -3,6 +3,11 @@ import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { CTN_CONFIG } from './config-provider';
 import { BackendService } from './services/backend.service';
+import { CtnImageComponent } from './components/ctn-image/ctn-image.component';
+export { MOCKING_PROVIDER } from './mocking-provider';
+// Directives
+import { DataDirective } from './directives/data.directive';
+export { DataDirective } from './directives/data.directive';
 export { BackendService, CTN_CONFIG };
 var KioCtnModule = (function () {
     function KioCtnModule() {
@@ -25,7 +30,7 @@ export { KioCtnModule };
 KioCtnModule.decorators = [
     { type: NgModule, args: [{
                 imports: [CommonModule, HttpModule],
-                //declarations: [],
+                declarations: [CtnImageComponent, DataDirective],
                 providers: [
                     {
                         provide: CTN_CONFIG,
@@ -35,10 +40,11 @@ KioCtnModule.decorators = [
                             }
                         }
                     },
-                    BackendService
+                    BackendService,
+                    DataDirective
                 ],
-                //entryComponents: [],
-                exports: [CommonModule, HttpModule]
+                entryComponents: [CtnImageComponent],
+                exports: [CommonModule, HttpModule, CtnImageComponent]
             },] },
 ];
 /** @nocollapse */
