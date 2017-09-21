@@ -13,17 +13,11 @@ DEPLOY_ROOT="${_ROOT}/release"
 
 MODULE_NAME="$(basename "${_ROOT}")"
 
-function log () {
-  printf '\x1b[1m[%s:%s]\x1b[0m %s\n' "ngModule" "${1}" "${@:2}"
-}
 
 function build() {
   cd "${_ROOT}"
-  log "build" "remove ./build"
   rm -rf ./build
-  log "build" "copy ./src to ./build"
   scp -r ./src ./build
-  log "build" "exec '"${NGC_BIN}" -p tsconfig-ngc.json'"
   "${NGC_BIN}" -p tsconfig-ngc.json  
 }
 
@@ -33,9 +27,10 @@ function list_ts () {
 }
 
 function clean_build() {
+  printf 'clean up "%s"\n' "${BUILD_ROOT}"
   cd "${BUILD_ROOT}"
   for ts_file in `list_ts "${BUILD_ROOT}"`; do
-    log "clean" "remove ${ts_file}"
+    #printf '%s\n' "${ts_file}"
     rm "${ts_file}"
   done
 }
@@ -47,11 +42,8 @@ function deploy () {
     exit 1
   fi
 
-  log "deploy" "remove old '$(basename "${DEPLOY_ROOT}")/*'"
-  rm -rf "${DEPLOY_ROOT}"/*
-  log "deploy" "move '${BUILD_ROOT}' -> '${DEPLOY_ROOT}'"
-  mkdir -p "${DEPLOY_ROOT}"
-  scp -r "${BUILD_ROOT}"/* "${DEPLOY_ROOT}/."
+  rm -rf "${DEPLOY_ROOT}"
+  mv "${BUILD_ROOT}" "${DEPLOY_ROOT}"
 }
 
 
@@ -66,16 +58,14 @@ function copy_release () {
     exit 2
   fi
 
-  log "copy_release" "remove installed release at '${1}'"
   rm -rf "${1}/node_modules/${MODULE_NAME}/release"
-  log "copy_release" "copy install release to '${1}'"
   scp -r "${DEPLOY_ROOT}" "${1}/node_modules/${MODULE_NAME}/release"
 }
 
 
 case ${1} in
   "build" )
-    build && deploy
+    build && clean_build && deploy
     ;;
 
   "clean" )
