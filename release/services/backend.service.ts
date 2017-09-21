@@ -58,20 +58,6 @@ export class BackendService {
   private cache : Map<string,Observable<KioQueryResult>> = new Map()
   private errorLogger:CtnLogger = new CtnLogger()
 
-  private wrapAsync ( subject : Observable<KioQueryResult> ) : Observable<KioQueryResult> {
-    const replayResult = new ReplaySubject(2,null)
-    const loadSubscription = subject.subscribe ( 
-        ( queryResult ) => {
-          replayResult.next ( queryResult )
-        } ,
-        ( error ) => replayResult.error ( error ) ,
-        () => {
-          loadSubscription.unsubscribe()
-        }
-       )
-    return replayResult
-  }
-
   private parseResponse ( response:Response , node:KioContentModel ):any {
     const responseData:any = response.json()
     return this.parseResponseData(responseData,node)

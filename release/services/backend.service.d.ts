@@ -13,7 +13,6 @@ export declare class BackendService {
     constructor(http: Http, mockingService: MockingProvider, config: CtnConfig);
     private cache;
     private errorLogger;
-    private wrapAsync(subject);
     private parseResponse(response, node);
     private parseResponseData(responseData, node);
     private _queryNode(node, contentParams);

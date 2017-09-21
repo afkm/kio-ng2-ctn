@@ -1,6 +1,6 @@
 import { Injectable, Inject, Optional } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeout';
@@ -35,15 +35,6 @@ var BackendService = (function () {
         this.cache = new Map();
         this.errorLogger = new CtnLogger();
     }
-    BackendService.prototype.wrapAsync = function (subject) {
-        var replayResult = new ReplaySubject(2, null);
-        var loadSubscription = subject.subscribe(function (queryResult) {
-            replayResult.next(queryResult);
-        }, function (error) { return replayResult.error(error); }, function () {
-            loadSubscription.unsubscribe();
-        });
-        return replayResult;
-    };
     BackendService.prototype.parseResponse = function (response, node) {
         var responseData = response.json();
         return this.parseResponseData(responseData, node);
