@@ -13,38 +13,18 @@ import {
   KioContentModel, KioNodeModel, KioQueryModel/*,
   debugging*/
 } from 'kio-ng2-data'
-import { CtnConfig } from '../interfaces/ctn-config'
+import { CtnConfig, CtnApiConfig } from '../interfaces/ctn-config'
 import { CTN_CONFIG } from '../config-provider'
 import { MockingProvider, MockedData } from '../interfaces/mocking-provider'
 import { MOCKING_PROVIDER } from '../mocking-provider'
 import { CtnLogger } from '../classes/Logger.class'
 
-const KIO_TXT_URL = 'https://kioget.37x.io/txt'
-
-const API_URL = 'https://pb8i8ysw33.execute-api.eu-central-1.amazonaws.com/v2/api'
-//const API_URL = 'https://vaskbde08f.execute-api.eu-central-1.amazonaws.com/stage/api'
-const API_TIMEOUT = 10 * 1000
-//const API_URL = 'https://kioctn-agenturfuerkrank.netdna-ssl.com/api'
-
-const getCacheKey = ( query : KioQuery ) : string => {
-  return query.locale + '_' + query.cuid + ( query.params ? ('['+JSON.stringify(query.params)+']') : '' )
-}
-
-const CACHE_TTL = 1000 * 60
-
-let QueryCache : Map<string,Observable<KioQueryResult>> = new Map()
-
-const addQueryToCache = ( queryKey : string , subject : ReplaySubject<KioQueryResult> , ttl:number=CACHE_TTL) => {
-  QueryCache.set(queryKey,subject)
-  setTimeout(()=>{
-    QueryCache.delete(queryKey)
-    subject.complete()
-  }, ttl )
-}
-
-
 @Injectable()
 export class BackendService {
+
+  protected apiConfig:CtnApiConfig
+  private cache : Map<string,Observable<KioQueryResult>> = new Map()
+  private errorLogger:CtnLogger = new CtnLogger()
 
   constructor(
       protected http:Http, 
@@ -52,11 +32,15 @@ export class BackendService {
       @Optional() @Inject(CTN_CONFIG) private config:CtnConfig
     )
   { 
-    
+    this.apiConfig = Object.assign({
+        post_url: 'https://pb8i8ysw33.execute-api.eu-central-1.amazonaws.com/v2/api',
+        get_url: 'https://kioget.37x.io',
+        timeout: (1000 * 10),
+        cache_ttl: (1000 * 60)
+      },
+      config.api || {})
   }
 
-  private cache : Map<string,Observable<KioQueryResult>> = new Map()
-  private errorLogger:CtnLogger = new CtnLogger()
 
   private parseResponse ( response:Response , node:KioContentModel ):any {
     const responseData:any = response.json()
@@ -80,11 +64,9 @@ export class BackendService {
 
   private _queryNode ( node : KioContentModel, contentParams:any ) : Observable<KioQueryResult> {
     const query : KioQuery = this.buildNodeQuery(node,contentParams)
-    return this.http.post ( API_URL , query )
-        .timeout(API_TIMEOUT)
+    return this.http.post ( this.apiConfig.post_url , query )
+        .timeout(this.apiConfig.timeout)
         .map ( (response) => this.mapResponseData ( query , this.parseResponse(response,node) ) )
-        /*.publishReplay(1,CACHE_TTL)
-        .refCount()*/
         .catch ( ( error:Response|any ) => {
           let errorMsg:string
           if ( error instanceof Response ) {
@@ -111,31 +93,8 @@ private mapResponseData ( query : KioQuery , responseData:any ) : KioQueryResult
     data: responseData
   })
 }
-/*
-private _query ( query : KioQuery ) : Observable<KioQueryResult> {
-    return this.http.post ( API_URL , query )
-        .map ( (response) => this.mapResponseData ( query , response.json() ) )
-        .catch ( ( error:Response|any ) => {
-          let errorMsg:string
-          if ( error instanceof Response ) {
-            const body = error.json()
-            const err = body.error || JSON.stringify(body)
-            errorMsg = `${error.status} - ${error.statusText || ''} ${err}`
-          } else {
-            errorMsg = error.message ? error.message : error.toString()
-          }
-          console.error ( errorMsg )
-          return Observable.throw(errorMsg)
-        } )
 
-
-  }*/
-
-  private addQuery ( cacheKey:string, observable:Observable<KioQueryResult> , ttl:number ) {
-    //addQueryToCache ( cacheKey , this.wrapAsync(observable) , ttl )
-  }
-
-  private post ( url:string, query?:any ) {
+private post ( url:string, query?:any ) {
     return this.http.post ( url , query )
               .map ( response => response.json() )
   }
@@ -163,12 +122,12 @@ private _query ( query : KioQuery ) : Observable<KioQueryResult> {
     return query
   }
 
-  loadNodeContent ( node : KioContentModel , contentParams:any , ttl:number=CACHE_TTL ) : Observable<KioQueryResult> {
+  loadNodeContent ( node : KioContentModel , contentParams:any , ttl:number=this.apiConfig.cache_ttl ) : Observable<KioQueryResult> {
     if ( /^\[mock/.test(node.cuid) )
       return this.loadMockedData ( node , contentParams )
 
     if ( node.type === 'txt' ) {
-      return this.http.get(`${KIO_TXT_URL}/${node.cuid}/${this.config.localeProvider.current}`).map ( response => {
+      return this.http.get(`${this.apiConfig.get_url}/txt/${node.cuid}/${this.config.localeProvider.current}`).map ( response => {
         return this.parseResponse ( response, node )
       } )
     }
@@ -184,9 +143,9 @@ private _query ( query : KioQuery ) : Observable<KioQueryResult> {
     } )
   }
 
-  load ( query : KioQuery, ttl:number=CACHE_TTL ) : Observable<KioQueryResult> {
+  load ( query : KioQuery, ttl:number=this.apiConfig.cache_ttl ) : Observable<KioQueryResult> {
     query.locale = this.config.localeProvider.current
-    return this.post ( API_URL, query ).map ( ( response ) => {
+    return this.post ( this.apiConfig.post_url, query ).map ( ( response ) => {
       const parsed = this.mapResponseData ( query, response )
       return parsed
     } )

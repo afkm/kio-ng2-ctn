@@ -9,24 +9,6 @@ debugging*/ } from 'kio-ng2-data';
 import { CTN_CONFIG } from '../config-provider';
 import { MOCKING_PROVIDER } from '../mocking-provider';
 import { CtnLogger } from '../classes/Logger.class';
-var KIO_TXT_URL = 'https://kioget.37x.io/txt';
-var API_URL = 'https://pb8i8ysw33.execute-api.eu-central-1.amazonaws.com/v2/api';
-//const API_URL = 'https://vaskbde08f.execute-api.eu-central-1.amazonaws.com/stage/api'
-var API_TIMEOUT = 10 * 1000;
-//const API_URL = 'https://kioctn-agenturfuerkrank.netdna-ssl.com/api'
-var getCacheKey = function (query) {
-    return query.locale + '_' + query.cuid + (query.params ? ('[' + JSON.stringify(query.params) + ']') : '');
-};
-var CACHE_TTL = 1000 * 60;
-var QueryCache = new Map();
-var addQueryToCache = function (queryKey, subject, ttl) {
-    if (ttl === void 0) { ttl = CACHE_TTL; }
-    QueryCache.set(queryKey, subject);
-    setTimeout(function () {
-        QueryCache.delete(queryKey);
-        subject.complete();
-    }, ttl);
-};
 var BackendService = (function () {
     function BackendService(http, mockingService, config) {
         this.http = http;
@@ -34,6 +16,12 @@ var BackendService = (function () {
         this.config = config;
         this.cache = new Map();
         this.errorLogger = new CtnLogger();
+        this.apiConfig = Object.assign({
+            post_url: 'https://pb8i8ysw33.execute-api.eu-central-1.amazonaws.com/v2/api',
+            get_url: 'https://kioget.37x.io',
+            timeout: (1000 * 10),
+            cache_ttl: (1000 * 60)
+        }, config.api || {});
     }
     BackendService.prototype.parseResponse = function (response, node) {
         var responseData = response.json();
@@ -54,8 +42,8 @@ var BackendService = (function () {
     BackendService.prototype._queryNode = function (node, contentParams) {
         var _this = this;
         var query = this.buildNodeQuery(node, contentParams);
-        return this.http.post(API_URL, query)
-            .timeout(API_TIMEOUT)
+        return this.http.post(this.apiConfig.post_url, query)
+            .timeout(this.apiConfig.timeout)
             .map(function (response) { return _this.mapResponseData(query, _this.parseResponse(response, node)); })
             .catch(function (error) {
             var errorMsg;
@@ -83,28 +71,6 @@ var BackendService = (function () {
             data: responseData
         });
     };
-    /*
-    private _query ( query : KioQuery ) : Observable<KioQueryResult> {
-        return this.http.post ( API_URL , query )
-            .map ( (response) => this.mapResponseData ( query , response.json() ) )
-            .catch ( ( error:Response|any ) => {
-              let errorMsg:string
-              if ( error instanceof Response ) {
-                const body = error.json()
-                const err = body.error || JSON.stringify(body)
-                errorMsg = `${error.status} - ${error.statusText || ''} ${err}`
-              } else {
-                errorMsg = error.message ? error.message : error.toString()
-              }
-              console.error ( errorMsg )
-              return Observable.throw(errorMsg)
-            } )
-    
-    
-      }*/
-    BackendService.prototype.addQuery = function (cacheKey, observable, ttl) {
-        //addQueryToCache ( cacheKey , this.wrapAsync(observable) , ttl )
-    };
     BackendService.prototype.post = function (url, query) {
         return this.http.post(url, query)
             .map(function (response) { return response.json(); });
@@ -129,11 +95,11 @@ var BackendService = (function () {
     };
     BackendService.prototype.loadNodeContent = function (node, contentParams, ttl) {
         var _this = this;
-        if (ttl === void 0) { ttl = CACHE_TTL; }
+        if (ttl === void 0) { ttl = this.apiConfig.cache_ttl; }
         if (/^\[mock/.test(node.cuid))
             return this.loadMockedData(node, contentParams);
         if (node.type === 'txt') {
-            return this.http.get(KIO_TXT_URL + "/" + node.cuid + "/" + this.config.localeProvider.current).map(function (response) {
+            return this.http.get(this.apiConfig.get_url + "/txt/" + node.cuid + "/" + this.config.localeProvider.current).map(function (response) {
                 return _this.parseResponse(response, node);
             });
         }
@@ -149,9 +115,9 @@ var BackendService = (function () {
     };
     BackendService.prototype.load = function (query, ttl) {
         var _this = this;
-        if (ttl === void 0) { ttl = CACHE_TTL; }
+        if (ttl === void 0) { ttl = this.apiConfig.cache_ttl; }
         query.locale = this.config.localeProvider.current;
-        return this.post(API_URL, query).map(function (response) {
+        return this.post(this.apiConfig.post_url, query).map(function (response) {
             var parsed = _this.mapResponseData(query, response);
             return parsed;
         });
