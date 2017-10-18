@@ -2,9 +2,9 @@
 	"name": "kio-ng2-ctn",
 	"version": "0.0.7",
 	"description": "ng2 module for querying ctn",
-	"main": "./release",
-	"module": "./release/module.js",
-	"typings": "./release/module.d.ts",
+	"main": "./src",
+	"module": "./src/module",
+	"typings": "./src/module.ts",
 	"scripts": {
 		"ng": "ngc",
 		"start": "ngc -p tsconfig-ngc.json serve",
