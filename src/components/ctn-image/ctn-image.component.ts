@@ -1,7 +1,15 @@
+import { Observable } from 'rxjs/Observable'
+import 'rxjs/add/observable/of'
+import 'rxjs/add/operator/delay'
+
+
 import { 
   Component, EventEmitter, ViewChild, ElementRef, 
+  OnChanges, SimpleChanges, SimpleChange,
   Input, Output
 } from '@angular/core';
+
+declare const Image:typeof HTMLImageElement
 
 @Component({
   selector: 'ctn-image',
@@ -15,6 +23,8 @@ export class CtnImageComponent {
   @Output() error:EventEmitter<null>=new EventEmitter<null>()
 
   @Input('src') src:string
+  
+  @Input() debug:boolean=false
 
   elementClass:string[]=['loading']
   loaded:boolean=false
@@ -27,11 +37,10 @@ export class CtnImageComponent {
 
   elementLoadProgress ( event:ProgressEvent ) {
     const p = (event.loaded / event.total) * 100
-    console.log('progress: %s', p )
+    //console.log('progress: %s', p )
   }
 
   elementDidLoad ( event:any ) {
-    //console.log ( 'image did load "%s"' , this.src )
     this.elementClass = ['loaded']
     this.loaded = true
     this.load.emit()
@@ -41,4 +50,5 @@ export class CtnImageComponent {
     this.elementClass = ['error']
     this.error.emit()
   }
+
 }

@@ -1,8 +1,8 @@
 <img 
     #imageElement 
+    [src]="src" 
     [hidden]="!src" 
     [ngClass]="elementClass"
-    [src]="src" 
     (loadstart)="elementStartsToLoad()"
     (progress)="elementLoadProgress($event)"
     (load)="elementDidLoad($event)" 

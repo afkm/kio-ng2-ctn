@@ -3,7 +3,7 @@
 	"version": "0.0.7",
 	"description": "ng2 module for querying ctn",
 	"main": "./src",
-	"module": "./src/module",
+	"module": "./src/module.ts",
 	"typings": "./src/module.ts",
 	"scripts": {
 		"ng": "ngc",
@@ -16,6 +16,8 @@
 		"e2e": "ngc -p tsconfig-ngc.json e2e",
 		"predoc": "rm -rf ./documentation",
 		"doc": "compodoc -p ./tsconfig-doc.json -d ./documentation/",
+		"sync:rfn": "./scripts/sync_to.sh ../../digit-rfn",
+		"sync:rfn:watch": "./scripts/watch.sh sync:rfn",
 		"deploy:release": "./scripts/copy_release.sh",
 		"transpile": "ngc -p tsconfig-ngc.json",
 		"watch:test": "ts-mocha -w ./test/**/*.spec.ts",

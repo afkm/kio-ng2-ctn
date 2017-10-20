@@ -34,7 +34,6 @@ function syncDir () {
     rsync -azh --delete "${MODULE_ROOT}/${dir_name}/." "${TARGET_MODULE}/${dir_name}/."
   else
     printf '\x1b[2mSkip\t\x1b[1;34m%s\x1b[0m\n' "${dir_name}"
-
   fi
 }
 
