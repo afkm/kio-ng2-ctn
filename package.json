@@ -36,8 +36,8 @@
 	},
 	"homepage": "https://github.com/afkm/kio-ng2-ctn#readme",
 	"peerDependencies": {
-		"kio-ng2-data": "~0.0.1",
-		"kio-ng2-worker": "~0.0.0",
+		"kio-ng2-data": "^0.0.1",
+		"kio-ng2-worker": "^0.0.1",
 		"@angular/common": "^4.2.3",
 		"@angular/compiler": "^4.2.3",
 		"@angular/core": "^4.2.3",
