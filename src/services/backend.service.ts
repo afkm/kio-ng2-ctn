@@ -13,7 +13,8 @@ import {
   KioContentModel, KioNodeModel, KioQueryModel/*,
   debugging*/
 } from 'kio-ng2-data'
-import { createClient, XHRWorkerClient } from 'kio-ng2-worker'
+import { XHRWorkerClient } from 'kio-ng2-worker'
+import { worker } from '../worker/worker'
 import { CtnConfig, CtnApiConfig } from '../interfaces/ctn-config'
 import { CTN_CONFIG } from '../config-provider'
 import { MockingProvider, MockedData } from '../interfaces/mocking-provider'
@@ -41,7 +42,7 @@ export class BackendService {
   protected apiConfig:CtnApiConfig
   private cache : Map<string,Observable<KioQueryResult>> = new Map()
   private errorLogger:CtnLogger = new CtnLogger()
-  public workerClient:XHRWorkerClient=createClient(this.config.workerURL)
+  public workerClient:XHRWorkerClient=new XHRWorkerClient(worker)
 
 
   private parseResponse ( response:Response , node:KioContentModel ):any {

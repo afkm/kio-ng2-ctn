@@ -13,6 +13,7 @@ function getTargetRoot () {
 
 TARGET_ROOT="$(getTargetRoot)"
 
+printf '\x1b[2m[%s]\x1b[0m ' "$(date)"
 printf 'Syncing\t\x1b[1;34m%s\x1b[0m to %s\n' "${MODULE_NAME}" "${TARGET_ROOT}"
 
 TARGET_NODE_MODULES="${TARGET_ROOT}/node_modules"

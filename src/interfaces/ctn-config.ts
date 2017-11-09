@@ -15,8 +15,4 @@ export interface CtnConfig {
   localeProvider: LocaleProvider
   api?: Optional<CtnApiConfig>
 
-  /**
-   * path to web worker script
-   */
-  workerURL: string
 }
