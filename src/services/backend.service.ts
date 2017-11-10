@@ -13,6 +13,8 @@ import {
   KioContentModel, KioNodeModel, KioQueryModel/*,
   debugging*/
 } from 'kio-ng2-data'
+import { XHRWorkerClient } from 'kio-ng2-worker'
+import { worker } from '../worker/worker'
 import { CtnConfig, CtnApiConfig } from '../interfaces/ctn-config'
 import { CTN_CONFIG } from '../config-provider'
 import { MockingProvider, MockedData } from '../interfaces/mocking-provider'
@@ -21,10 +23,6 @@ import { CtnLogger } from '../classes/Logger.class'
 
 @Injectable()
 export class BackendService {
-
-  protected apiConfig:CtnApiConfig
-  private cache : Map<string,Observable<KioQueryResult>> = new Map()
-  private errorLogger:CtnLogger = new CtnLogger()
 
   constructor(
       protected http:Http, 
@@ -41,11 +39,17 @@ export class BackendService {
       config.api || {})
   }
 
+  protected apiConfig:CtnApiConfig
+  private cache : Map<string,Observable<KioQueryResult>> = new Map()
+  private errorLogger:CtnLogger = new CtnLogger()
+  public workerClient:XHRWorkerClient=new XHRWorkerClient(worker)
+
 
   private parseResponse ( response:Response , node:KioContentModel ):any {
     const responseData:any = response.json()
     return this.parseResponseData(responseData,node)
   }
+
   private parseResponseData ( responseData:any , node:KioContentModel ):any {
       if ( node.type === 'txt' )
       return {data: responseData}
@@ -85,17 +89,29 @@ export class BackendService {
         } )
   }
 
-private mapResponseData ( query : KioQuery , responseData:any ) : KioQueryResult {
-  return ({
-    success: true ,
-    error: null,
-    query,
-    data: responseData
-  })
-}
+  private mapResponseData ( query : KioQuery , responseData:any ) : KioQueryResult {
+    return ({
+      success: true ,
+      error: null,
+      query,
+      data: responseData
+    })
+  }
 
-private post ( url:string, query?:any ) {
-    return this.http.post ( url , query )
+  private post ( url:string, query?:any ) {
+    if ( this.config.useWebWorker !== false ) {
+    
+      return this.workerClient.request ( {
+        method: 'POST',
+        url: url,
+        data: JSON.stringify(query)
+      } ).map ( (data:any) => {
+        return data.response
+      } )
+
+    }
+    
+    return this.http.post(url , query)
               .map ( response => response.json() )
   }
 
@@ -127,8 +143,8 @@ private post ( url:string, query?:any ) {
       return this.loadMockedData ( node , contentParams )
 
     if ( node.type === 'txt' ) {
-      return this.http.get(`${this.apiConfig.get_url}/txt/${node.cuid}/${this.config.localeProvider.current}`).map ( response => {
-        return this.parseResponse ( response, node )
+      return this.requestGet(`${this.apiConfig.get_url}/txt/${node.cuid}/${this.config.localeProvider.current}`).map ( response => {
+        return this.parseResponseData ( response, node )
       } )
     }
 
@@ -149,6 +165,29 @@ private post ( url:string, query?:any ) {
       const parsed = this.mapResponseData ( query, response )
       return parsed
     } )
+  }
+
+
+  protected requestGet ( url:string ) {
+
+    if ( this.config.useWebWorker !== false ) {
+      return this.workerClient.request({
+        url,
+        method: 'GET',
+        responseType: 'json'
+      }).mergeMap ( data => {
+
+        if ( 'error' in data ) {
+          return Observable.throw(new Error(data['error']))
+        } else {
+          return Observable.of(data['response'])
+        }
+
+      } )
+    }
+
+    return this.http.get(url).map ( response => response.json() )
+
   }
 
   /*protected logger=window.afkm.logger.cloneToScope(this,{

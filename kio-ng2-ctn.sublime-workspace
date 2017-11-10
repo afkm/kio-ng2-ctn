@@ -532,7 +532,7 @@
 			"file": "src/interfaces/ctn-config.ts",
 			"settings":
 			{
-				"buffer_size": 115,
+				"buffer_size": 374,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -541,7 +541,7 @@
 			"file": "src/services/backend.service.ts",
 			"settings":
 			{
-				"buffer_size": 6894,
+				"buffer_size": 6027,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -558,7 +558,7 @@
 			"file": "/Users/tEErohr/Documents/kio/angular2/digit/digit-dev/modules/kio-ng2-globals/node_modules/kio-ng2-ctn/release/services/backend.service.ts",
 			"settings":
 			{
-				"buffer_size": 7329,
+				"buffer_size": 5540,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -1020,20 +1020,22 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 115,
+						"buffer_size": 374,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								115,
-								115
+								0,
+								0
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
 							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
@@ -1049,15 +1051,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6894,
+						"buffer_size": 6027,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1978,
-								1978
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1111,15 +1113,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7329,
+						"buffer_size": 5540,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2405,
-								2405
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1132,7 +1134,8 @@
 								"convertTabsToSpaces": true,
 								"indentSize": 2,
 								"tabSize": 2
-							}
+							},
+							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 945.0,

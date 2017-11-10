@@ -14,4 +14,9 @@ export interface CtnApiConfig {
 export interface CtnConfig {
   localeProvider: LocaleProvider
   api?: Optional<CtnApiConfig>
+
+  /**
+   * use inline web worker for xhr requests
+   */
+  useWebWorker?: boolean
 }

@@ -1,9 +1,13 @@
 /aot
 
-/src
-
 *.ngfactory.ts
 
 documentation
+
+scripts
+
+tsconfig-*.json
+
+nodemon.json
 
 docs

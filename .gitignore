@@ -4,3 +4,5 @@ release/**/*.ngfactory.ts
 node_modules
 build
 *.sublime-workspace
+*.sublime-workspace
+*.sublime-workspace
