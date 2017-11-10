@@ -89,17 +89,29 @@ export class BackendService {
         } )
   }
 
-private mapResponseData ( query : KioQuery , responseData:any ) : KioQueryResult {
-  return ({
-    success: true ,
-    error: null,
-    query,
-    data: responseData
-  })
-}
+  private mapResponseData ( query : KioQuery , responseData:any ) : KioQueryResult {
+    return ({
+      success: true ,
+      error: null,
+      query,
+      data: responseData
+    })
+  }
 
-private post ( url:string, query?:any ) {
-    return this.http.post ( url , query )
+  private post ( url:string, query?:any ) {
+    if ( this.config.useWebWorker !== false ) {
+    
+      return this.workerClient.request ( {
+        method: 'POST',
+        url: url,
+        data: JSON.stringify(query)
+      } ).map ( (data:any) => {
+        return data.response
+      } )
+
+    }
+    
+    return this.http.post(url , query)
               .map ( response => response.json() )
   }
 
@@ -158,19 +170,23 @@ private post ( url:string, query?:any ) {
 
   protected requestGet ( url:string ) {
 
-    return this.workerClient.request({
-      url,
-      method: 'GET',
-      responseType: 'json'
-    }).mergeMap ( data => {
+    if ( this.config.useWebWorker !== false ) {
+      return this.workerClient.request({
+        url,
+        method: 'GET',
+        responseType: 'json'
+      }).mergeMap ( data => {
 
-      if ( 'error' in data ) {
-        return Observable.throw(new Error(data['error']))
-      } else {
-        return Observable.of(data['response'])
-      }
+        if ( 'error' in data ) {
+          return Observable.throw(new Error(data['error']))
+        } else {
+          return Observable.of(data['response'])
+        }
 
-    } )
+      } )
+    }
+
+    return this.http.get(url).map ( response => response.json() )
 
   }
 
