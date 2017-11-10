@@ -30,7 +30,6 @@ export { BackendService, CTN_CONFIG }
 export class KioCtnModule {
 
   public static forRoot (config:CtnConfig):ModuleWithProviders {
-    console.log('init CTN_CONFIG with ', config )
     return {
       ngModule: KioCtnModule,
       providers: [
