@@ -5,6 +5,7 @@ import 'rxjs/add/operator/catch'
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/timeout'
 
+import * as path from 'path'
 import { 
   KioQuery, KioNode, KioQueryResult,
   KioContentType,
@@ -31,7 +32,7 @@ export class BackendService {
     )
   { 
     this.apiConfig = Object.assign({
-        post_url: 'https://pb8i8ysw33.execute-api.eu-central-1.amazonaws.com/v2/api',
+        post_url: 'https://pb8i8ysw33.execute-api.eu-central-1.amazonaws.com/v2',
         get_url: 'https://kioget.37x.io',
         timeout: (1000 * 10),
         cache_ttl: (1000 * 60)
@@ -160,8 +161,8 @@ export class BackendService {
   }
 
   load ( query : KioQuery, ttl:number=this.apiConfig.cache_ttl ) : Observable<KioQueryResult> {
-    query.locale = this.config.localeProvider.current
-    return this.post ( this.apiConfig.post_url, query ).map ( ( response ) => {
+    const url = path.join(this.apiConfig.get_url,query.role,query.cuid,this.config.localeProvider.current)
+    return this.requestGet ( url ).map ( ( response ) => {
       const parsed = this.mapResponseData ( query, response )
       return parsed
     } )
