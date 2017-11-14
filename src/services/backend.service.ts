@@ -48,9 +48,6 @@ export class BackendService {
 
   public workerClient:XHRWorkerClient=new XHRWorkerClient(worker)
 
-  public workerClient:XHRWorkerClient=createClient(this.config.workerURL)
-
-
   public cuidLoaded:EventEmitter<string>=new EventEmitter()
 
 
