@@ -1,4 +1,4 @@
-import { Injectable, Inject, Optional } from '@angular/core'
+import { Injectable, EventEmitter, Inject, Optional } from '@angular/core'
 import { Http , Response } from '@angular/http'
 import { Observable , ReplaySubject , AsyncSubject } from 'rxjs'
 import 'rxjs/add/operator/catch'
@@ -41,9 +41,17 @@ export class BackendService {
   }
 
   protected apiConfig:CtnApiConfig
+
   private cache : Map<string,Observable<KioQueryResult>> = new Map()
+
   private errorLogger:CtnLogger = new CtnLogger()
+
   public workerClient:XHRWorkerClient=new XHRWorkerClient(worker)
+
+  public workerClient:XHRWorkerClient=createClient(this.config.workerURL)
+
+
+  public cuidLoaded:EventEmitter<string>=new EventEmitter()
 
 
   private parseResponse ( response:Response , node:KioContentModel ):any {
@@ -52,6 +60,7 @@ export class BackendService {
   }
 
   private parseResponseData ( responseData:any , node:KioContentModel ):any {
+    this.cuidLoaded.emit(node.cuid)
       if ( node.type === 'txt' )
       return {data: responseData}
 
@@ -190,6 +199,7 @@ export class BackendService {
     return this.http.get(url).map ( response => response.json() )
 
   }
+
 
   /*protected logger=window.afkm.logger.cloneToScope(this,{
     labelStyle: {
