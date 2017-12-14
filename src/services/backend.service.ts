@@ -143,25 +143,13 @@ export class BackendService {
     if ( /^\[mock/.test(node.cuid) )
       return this.loadMockedData ( node , contentParams )
 
-    if ( node.type === 'txt' ) {
-      return this.requestGet(`${this.apiConfig.get_url}/txt/${node.cuid}/${this.config.localeProvider.current}`).map ( response => {
+    return this.requestGet(`${this.apiConfig.get_url}/${node.type}/${node.cuid}/${this.config.localeProvider.current}`).map ( response => {
         return this.parseResponseData ( response, node )
       } )
-    }
-
-    const query:KioQuery = this.buildNodeQuery(node, contentParams)
-    const tStart = Date.now()
-    return this._queryNode(node,contentParams).map ( result => {
-      return result
-    } )
-    .catch ( (error:any) => {
-      this.errorLogger.logError ( error, node )
-      return Observable.throw(error)
-    } )
   }
 
   load ( query : KioQuery, ttl:number=this.apiConfig.cache_ttl ) : Observable<KioQueryResult> {
-    const url = path.join(this.apiConfig.get_url,query.role,query.cuid,this.config.localeProvider.current)
+    const url = `${this.apiConfig.get_url}/${query.role}/${query.cuid}/${this.config.localeProvider.current}`
     return this.requestGet ( url ).map ( ( response ) => {
       const parsed = this.mapResponseData ( query, response )
       return parsed
