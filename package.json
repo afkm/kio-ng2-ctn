@@ -1,6 +1,6 @@
 {
   "name": "kio-ng2-ctn",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ng2 module for querying ctn",
   "main": "./src",
   "module": "./src/module",
@@ -60,7 +60,7 @@
     "typescript": "^2.3.4"
   },
   "bin": {
-    "kio-ng2-ctn": "render_template.js"
+    "kio-ng2-ctn": "./bin/render_template.js"
   },
   "repository": {
     "type": "git",
