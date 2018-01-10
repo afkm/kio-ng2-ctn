@@ -9,6 +9,7 @@ export interface CtnApiConfig {
   get_url: string
   timeout: number
   cache_ttl: number
+  concurrencyLimit?: number
 }
 
 export interface CtnConfig {

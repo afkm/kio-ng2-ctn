@@ -6,6 +6,7 @@ export { CtnConfig } from './interfaces/ctn-config'
 import { CTN_CONFIG } from './config-provider'
 import { MOCKING_PROVIDER } from './mocking-provider'
 import { BackendService } from './services/backend.service'
+import { XHRService } from './services/xhr.service'
 import { CtnImageComponent } from './components/ctn-image/ctn-image.component'
 
 export { MOCKING_PROVIDER } from './mocking-provider'
@@ -14,6 +15,7 @@ export { MOCKING_PROVIDER } from './mocking-provider'
 import { DataDirective } from './directives/data.directive'
 export { DataDirective } from './directives/data.directive'
 
+export { XHRService } from './services/xhr.service'
 
 export { BackendService, CTN_CONFIG }
 
@@ -22,7 +24,8 @@ export { BackendService, CTN_CONFIG }
   declarations: [CtnImageComponent,DataDirective],
   providers: [ 
     BackendService,
-    DataDirective
+    DataDirective,
+    XHRService
   ],
   entryComponents: [CtnImageComponent],
   exports: [CommonModule,HttpModule,CtnImageComponent]

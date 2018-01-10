@@ -21,12 +21,14 @@ import { CTN_CONFIG } from '../config-provider'
 import { MockingProvider, MockedData } from '../interfaces/mocking-provider'
 import { MOCKING_PROVIDER } from '../mocking-provider'
 import { CtnLogger } from '../classes/Logger.class'
+import { XHRService } from './xhr.service'
 
 @Injectable()
 export class BackendService {
 
   constructor(
       protected http:Http, 
+      protected xhr:XHRService,
       @Optional() @Inject(MOCKING_PROVIDER) private mockingService:MockingProvider, 
       @Optional() @Inject(CTN_CONFIG) private config:CtnConfig
     )
@@ -156,7 +158,6 @@ export class BackendService {
     } )
   }
 
-
   protected requestGet ( url:string ) {
 
     if ( this.config.useWebWorker !== false ) {
@@ -175,8 +176,12 @@ export class BackendService {
       } )
     }
 
-    return this.http.get(url).map ( response => response.json() )
+    return this.getURL(url).map ( response => response.json() )
 
+  }
+
+  protected getURL ( url:string ) {
+    return this.xhr.requestGet(url)
   }
 
   /*protected logger=window.afkm.logger.cloneToScope(this,{
