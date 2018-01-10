@@ -1,6 +1,6 @@
 {
   "name": "kio-ng2-ctn",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "ng2 module for querying ctn",
   "main": "./src",
   "module": "./src/module",
