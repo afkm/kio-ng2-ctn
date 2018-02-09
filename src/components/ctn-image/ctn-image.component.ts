@@ -14,7 +14,7 @@ export class CtnImageComponent {
   @Output() load:EventEmitter<null>=new EventEmitter<null>()
   @Output() error:EventEmitter<null>=new EventEmitter<null>()
 
-  @Input('src') src:string
+  @Input('src') src:string=''
 
   elementClass:string[]=['loading']
   loaded:boolean=false
