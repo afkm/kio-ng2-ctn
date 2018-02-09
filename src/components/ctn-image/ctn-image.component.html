@@ -2,7 +2,7 @@
     #imageElement 
     [hidden]="!src" 
     [ngClass]="elementClass"
-    [src]="src" 
+    [src]="src || ''" 
     (loadstart)="elementStartsToLoad()"
     (progress)="elementLoadProgress($event)"
     (load)="elementDidLoad($event)" 
