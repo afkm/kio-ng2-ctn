@@ -4,9 +4,10 @@ import { EventEmitter, Injectable, Optional, Inject } from '@angular/core'
 import { Http , Response } from '@angular/http'
 import { CtnConfig, CtnApiConfig } from '../interfaces/ctn-config'
 import { CTN_CONFIG } from '../config-provider'
+import { IRequest } from '../interfaces/request'
 
-export type CtnRequest = string;
-export type CtnPayload = [CtnRequest,Response];
+export type CtnRequest = string|IRequest;
+export type CtnPayload = [IRequest,Response];
 
 
 @Injectable()
@@ -21,7 +22,7 @@ export class XHRService {
       this._bufferSize = config.api.concurrencyLimit
     }
 
-    this._requestSubscription = this._requests.flatMap ( (request:CtnRequest) => {
+    this._requestSubscription = this._requests.flatMap ( (request:IRequest) => {
       this._requestCount++
       return this._executeRequest(request)
     }, this._bufferSize )
@@ -36,27 +37,34 @@ export class XHRService {
 
   private _bufferSize:number
 
-  private _requests:EventEmitter<CtnRequest>=new EventEmitter()
+  private _requests:EventEmitter<IRequest>=new EventEmitter()
   
-  private _responses:EventEmitter<[CtnRequest,Response]>=new EventEmitter()
+  private _responses:EventEmitter<[IRequest,Response]>=new EventEmitter()
 
   private _toggleRequests:EventEmitter<boolean>=new EventEmitter()
 
-  private _executeRequest ( request:CtnRequest ):Observable<CtnPayload> {
+  private _executeRequest ( request:IRequest ):Observable<CtnPayload> {
     //console.log('Executing request', request)
-    return this.http.get(request).map ( response => [request,response] )
+    const {
+      url,
+      headers
+    } = request
+    return this.http.get(url,{headers}).map ( response => [request,response] )
   }
 
-  waitForResponse ( url:CtnRequest ) {
+  waitForResponse ( waitRequest:IRequest ) {
     return this._responses.first ( ([request,response]) => {
-      return request === url
+      return request.url === waitRequest.url
     } ).map ( ([request,response]) => response )
   }
 
-  requestGet ( url:CtnRequest ) {
+  requestGet ( request:CtnRequest ) {
+    if ( 'string' === typeof request ) {
+      return this.requestGet({url: request})
+    }
     this._requestCountTotal++
-    const result = this.waitForResponse(url)
-    this._requests.emit(url)
+    const result = this.waitForResponse(request)
+    this._requests.emit(request)
     return result
   }
 
